@@ -9,6 +9,7 @@ namespace Votador.Site.Controllers
     public class LoginController : Controller
     {
         //[AllowAnonymous]
+        [HttpGet("login")]
         public IActionResult Login()
         {
             return View();
@@ -24,14 +25,24 @@ namespace Votador.Site.Controllers
             {
                 HttpContext.Session.Set("token", Encoding.ASCII.GetBytes(resultado.Login.Token));
                 HttpContext.Session.Set("usuario.email", Encoding.ASCII.GetBytes(resultado.Login.Email));
+                HttpContext.Session.Set("usuario.id", Encoding.ASCII.GetBytes(resultado.Login.Id.ToString()));
 
                 return RedirectToAction("Apresentacao", "Recurso");
             }
             else
             {
-                ModelState.AddModelError("", "Usuário e/ou senha inválidos.");
-                return View();
+                return RedirectToAction("Index", "Home", new { mensagem = "Usuário e/ou senha inválidos." });
             }
+        }
+
+        [HttpPost]
+        public ActionResult Logout(LoginViewModel login)
+        {
+            HttpContext.Session.Remove("token");
+            HttpContext.Session.Remove("usuario.email");
+            HttpContext.Session.Remove("usuario.id");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

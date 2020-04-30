@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Votador.Site.Models;
 
@@ -34,7 +36,7 @@ namespace Votador.Site.Service
             }
         }
 
-        public async Task<VotoViewModel> RealizarVoto(string token, VotoViewModel votoViewModel)
+        public async Task<string> RealizarVoto(string token, VotoViewModel votoViewModel)
         {
             var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(BaseUri);
@@ -42,17 +44,33 @@ namespace Votador.Site.Service
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            var response = await httpClient.GetAsync("api/recurso/resultado");
-            if (response.IsSuccessStatusCode)
+            var voto = new
             {
-                var content = await response.Content.ReadAsStringAsync();
-                votoViewModel = await Task.Run(() => JsonConvert.DeserializeObject<VotoViewModel>(content));
-                return votoViewModel;
-            }
-            else
+                Id = 0,
+                UsuarioId = votoViewModel.UsuarioId,
+                RecursoId = votoViewModel.Recurso.Id,
+                Comentario = votoViewModel.Comentario
+            };
+
+            var conteudo = JsonConvert.SerializeObject(voto);
+            var httpconteudo = new StringContent(conteudo, Encoding.UTF8, "application/json");
+
+            var mensagem = string.Empty;
+            var response = await httpClient.PostAsync("api/voto", httpconteudo);
+            switch (response.StatusCode)
             {
-                return null;
+                case HttpStatusCode.OK:
+                    mensagem = "Voto realizado com sucesso, obrigado pela participação!";
+                    break;
+                case HttpStatusCode.Conflict:
+                    mensagem = "A regra é clara, só é possível votar uma vez em cada ideia.";
+                    break;
+                default:
+                    mensagem = "Desculpe, falha ao registrar o voto, tente novamente mais tarde.";
+                    break;
             }
+
+            return mensagem ;
         }
     }
 }

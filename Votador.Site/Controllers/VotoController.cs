@@ -14,9 +14,11 @@ namespace Votador.Site.Controllers
         {
             HttpContext.Session.TryGetValue("token", out byte[] tokenBytes);
             HttpContext.Session.TryGetValue("usuario.email", out byte[] emailBytes);
+            HttpContext.Session.TryGetValue("usuario.id", out byte[] idBytes);
 
             var token = Encoding.Default.GetString(tokenBytes);
             var email = Encoding.Default.GetString(emailBytes);
+            var usuarioId = Encoding.Default.GetString(idBytes);
 
             var recursoService = new RecursoService();
             var recursos = await recursoService.ObterApresentacao(token);
@@ -24,6 +26,7 @@ namespace Votador.Site.Controllers
 
             var votoViewModel = new VotoViewModel
             {
+                UsuarioId = Convert.ToInt32(usuarioId),
                 UsuarioEmail = email,
                 Comentario = string.Empty,
                 Recurso = recurso
@@ -34,16 +37,18 @@ namespace Votador.Site.Controllers
 
         public async Task<IActionResult> ConfirmarVoto(VotoViewModel votoViewModel)
         {
+            var mensagem = string.Empty;
+
             var tokenValido = HttpContext.Session.TryGetValue("token", out byte[] tokenBytes);
             if (tokenValido)
             {
                 var votoService = new VotoService();
                 var token = Encoding.Default.GetString(tokenBytes);
 
-                await votoService.RealizarVoto(token, votoViewModel);
+                mensagem = await votoService.RealizarVoto(token, votoViewModel);
             }
 
-            return View("Voto computado com sucesso." + Environment.NewLine + "Obrigado pela participação!");
+            return RedirectToAction("Index", "Home", new { mensagem = mensagem });
         }
     }
 }

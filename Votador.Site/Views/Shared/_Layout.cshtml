@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Login";
+
+    Context.Session.TryGetValue("usuario.id", out byte[] usuarioIdBytes);
+    var hidden = !(usuarioIdBytes != null);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,10 +32,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Recurso" asp-action="Apresentacao">Votar!</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Recurso" asp-action="Apresentacao" hidden=@hidden>Votar!</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Recurso" asp-action="Resultado">Resultado</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Recurso" asp-action="Resultado" hidden=@hidden>Resultado</a>
                         </li>
                     </ul>
                 </div>

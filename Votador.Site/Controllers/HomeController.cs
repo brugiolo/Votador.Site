@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.Text;
 using Votador.Site.Models;
 
 namespace Votador.Site.Controllers
@@ -19,8 +15,15 @@ namespace Votador.Site.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string mensagem)
         {
+            HttpContext.Session.TryGetValue("usuario.id", out byte[] usuarioIdBytes);
+
+            if (usuarioIdBytes == null && mensagem == null)
+                mensagem = "Faça login e comece logo a votar!";
+            
+            ViewData["Mensagem"] = mensagem;
+
             return View();
         }
 
