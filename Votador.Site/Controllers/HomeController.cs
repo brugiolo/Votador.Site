@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Text;
 using Votador.Site.Models;
 
 namespace Votador.Site.Controllers

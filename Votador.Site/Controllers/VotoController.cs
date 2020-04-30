@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Votador.Site.Models;
 using Votador.Site.Service;
-using System.Linq;
 
 namespace Votador.Site.Controllers
 {
