@@ -1,0 +1,46 @@
+﻿@model Votador.Site.Models.VotoViewModel
+
+@{
+    ViewData["Title"] = "Confirmar Voto";
+}
+
+<h2>Escreva um comentário bacana e finalize o voto!</h2>
+
+<form asp-action="Votacao">
+    <div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Recurso.Titulo)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Recurso.Titulo)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Recurso.Descricao)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Recurso.Descricao)
+            </dd>
+        </dl>
+        <div class="form-groupcol-sm-10">
+            <input asp-for="Id" class="form-control" hidden="hidden" />
+            <input asp-for="UsuarioEmail" class="form-control" hidden="hidden" />
+            <input asp-for="Recurso.Id" class="form-control" hidden="hidden" />
+            <input asp-for="Recurso.Titulo" class="form-control" hidden="hidden" />
+            <input asp-for="Recurso.Descricao" class="form-control" hidden="hidden" />
+
+            <label asp-for="Comentario" class="control-label"></label>
+            <input asp-for="Comentario" class="form-control" />
+            <span asp-validation-for="Comentario" class="text-danger"></span>
+        </div>
+        <br>
+        <div class="form-group">
+            <input type="submit" value="Confirmar meu voto!!" class="btn btn-primary" asp-action="ConfirmarVoto" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

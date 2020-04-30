@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Votador.Site.Models.RecursoVotosViewModel>
+
+@{
+    ViewData["Title"] = "Resultado";
+}
+
+<h3>Confira como anda a campanha!</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Recurso.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recurso.Descricao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroDeVotos)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recurso.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Recurso.Descricao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDeVotos)
+            </td>
+            <td>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

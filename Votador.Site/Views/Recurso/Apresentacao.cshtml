@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Votador.Site.Models.RecursoViewModel>
+
+@{
+    ViewData["Title"] = "Apresentacao";
+}
+
+<h3>Confira as ideis disponíveis e vote nas que curtir mais!!!</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Titulo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titulo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descricao)
+            </td>
+            <td>
+                @Html.ActionLink("Votar nessa ideia!", "Votacao", "Voto", new { recursoId = item.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
